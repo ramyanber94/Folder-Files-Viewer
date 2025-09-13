@@ -2,7 +2,6 @@
 
 import type { FileNode } from '@/core/types';
 import { FilePreview } from './FilePreview';
-import { ItemActions } from './ItemActions';
 
 interface RecentFileListProps {
   files: FileNode[];
@@ -70,14 +69,7 @@ export function RecentFileList({ files, className = "" }: RecentFileListProps) {
                 )}
               </div>
             </div>
-            
-            <div className="flex-shrink-0 ml-2">
-              <ItemActions 
-                itemPath={file.name}
-                itemName={file.name}
-                itemType="file"
-              />
-            </div>
+
           </div>
         </div>
       ))}
