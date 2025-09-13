@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { Breadcrumb } from '@/components/Breadcrumb';
 
 interface MobileNavProps {
   children: React.ReactNode;
@@ -11,6 +12,28 @@ interface MobileNavProps {
 export function MobileNav({ children }: MobileNavProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const pathname = usePathname();
+
+  // Extract current path for breadcrumbs
+  const getCurrentPath = (): string => {
+    if (pathname === '/' || pathname === '/recent') {
+      return '';
+    }
+    
+    // For folder paths like /folder/path/to/folder
+    if (pathname.startsWith('/folder/')) {
+      const encodedPath = pathname.replace('/folder/', '');
+      try {
+        return decodeURIComponent(encodedPath);
+      } catch {
+        return encodedPath;
+      }
+    }
+    
+    return '';
+  };
+
+  const currentPath = getCurrentPath();
+  const showBreadcrumbs = currentPath !== '';
 
   const navItems = [
     {
@@ -29,9 +52,7 @@ export function MobileNav({ children }: MobileNavProps) {
 
   return (
     <>
-      {/* Mobile Layout */}
       <div className="lg:hidden">
-        {/* Mobile Header */}
         <header className="bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between">
           <h1 className="text-lg font-semibold text-gray-900">File Explorer</h1>
           <button
@@ -49,7 +70,12 @@ export function MobileNav({ children }: MobileNavProps) {
           </button>
         </header>
 
-        {/* Mobile Menu Overlay */}
+        {showBreadcrumbs && (
+          <div className="bg-white border-b border-gray-100 px-4 py-2">
+            <Breadcrumb currentPath={currentPath} className="w-full" />
+          </div>
+        )}
+
         {isMenuOpen && (
           <div className="fixed inset-0 z-50 bg-black bg-opacity-50" onClick={() => setIsMenuOpen(false)}>
             <nav className="fixed top-0 left-0 bottom-0 w-64 bg-white shadow-xl">

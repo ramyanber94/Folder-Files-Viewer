@@ -48,6 +48,7 @@ export default async function FolderPage({ params }: Props) {
 
   return (
     <div className="w-full p-4 sm:p-6 space-y-4 sm:space-y-6">
+      {/* Breadcrumb is now handled by MobileNav on mobile, but keep for desktop */}
       <div className="hidden sm:block">
         <Breadcrumb currentPath={folderPath} className="mb-4" />
       </div>
